@@ -7,10 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "db:migrate": "node scripts/db-migrate.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.97.0",
+    "pg": "^8.19.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

@@ -66,7 +66,20 @@ GET http://localhost:18789/api/status
 
 Mission Control can persist each polling snapshot to Supabase.
 
-### 1) Run SQL schema in Supabase
+### 1) Run SQL schema in Supabase (recommended: via migrations)
+
+#### Option A — automated migrations (preferred)
+
+1. Set `SUPABASE_DB_URL` in `.env.local` (see below)
+2. Run:
+
+```bash
+npm run db:migrate
+```
+
+Migrations are tracked in `schema_migrations`, so reruns are safe.
+
+#### Option B — manual SQL
 
 1. Open Supabase project: `https://fywmglfnjkoopcvnzvoy.supabase.co`
 2. Go to **SQL Editor** → **New query**
@@ -93,7 +106,12 @@ Required for logging:
 - `VITE_SUPABASE_URL` (already set to the project URL)
 - `VITE_SUPABASE_ANON_KEY` (from Supabase → Settings → API)
 
-If these are missing, the dashboard still runs normally and logs this warning once:
+Required for automated table creation / schema updates:
+
+- `SUPABASE_DB_URL` (Database connection string)
+- `SUPABASE_SERVICE_ROLE_KEY` (server-side use only; never expose client-side)
+
+If `VITE_SUPABASE_*` vars are missing, the dashboard still runs normally and logs this warning once:
 `[analytics] Supabase logging disabled: missing VITE_SUPABASE_URL and/or VITE_SUPABASE_ANON_KEY.`
 
 ### 3) Verify logging
@@ -105,8 +123,8 @@ npm run dev
 Open `http://localhost:5173`, wait ~30 seconds, then run in Supabase SQL editor:
 
 ```sql
-select * from system_health order by created_at desc limit 20;
-select * from agent_status order by created_at desc limit 20;
+select * from system_health order by timestamp desc limit 20;
+select * from agent_status order by timestamp desc limit 20;
 ```
 
 Returns:
