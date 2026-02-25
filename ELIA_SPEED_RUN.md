@@ -246,17 +246,32 @@ vercel
 
 ---
 
-## 💬 Communication
+## 💬 Progress Updates to Nicola
 
-**When you're done:**
+**Report progress at each milestone:**
+
+### 50% Complete (after Step 2: Code)
 ```
-sessions_send(message="theo: Analytics Logger complete! 
-- Supabase tables live
-- Logger integrated
-- Data logging every 30s
-- Code committed to GitHub
-- Ready for Vercel deploy")
+sessions_send(message="theo: 50% done - Supabase tables created, analyticsLogger.js written, integration in progress. ETA 1.5 hours.")
 ```
+Also: Message Nicola on Telegram if important.
+
+### 75% Complete (after Step 3: Testing)
+```
+sessions_send(message="theo: 75% done - Testing complete, data logging verified. Final commit + push in 15 min.")
+```
+
+### 100% Complete (after Step 4: Git)
+```
+sessions_send(message="theo: Analytics Logger 100% DONE! 
+✅ Supabase tables live & logging
+✅ Data persisted every 30s
+✅ Code clean & committed
+✅ Ready for SSH access
+- Nicola can now: ssh -N -L 5173:localhost:5173 Theo@100.66.70.45
+- Then: http://localhost:5173")
+```
+Also: Message Nicola directly on Telegram with final status.
 
 ---
 
