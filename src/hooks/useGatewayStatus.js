@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { analyticsLogger } from '../services/analyticsLogger';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:18789';
 
 export function useGatewayStatus() {
   const [data, setData] = useState(null);
@@ -9,7 +12,7 @@ export function useGatewayStatus() {
   const fetchStatus = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:18789/api/status', {
+      const response = await fetch(`${API_URL}/api/status`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -22,6 +25,8 @@ export function useGatewayStatus() {
       setData(json);
       setLastUpdated(new Date());
       setError(null);
+
+      analyticsLogger.logSnapshot(json);
     } catch (err) {
       console.error('Gateway status fetch failed:', err);
       setError(err.message);

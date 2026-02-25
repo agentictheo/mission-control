@@ -32,7 +32,7 @@ function ProgressBar({ used, total, colorClass }) {
   );
 }
 
-export default function Usage({ data }) {
+export default function Usage() {
   // Use mock data — real token data would need a log parser or stats API
   const bots = BOTS;
   const totals = {

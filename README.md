@@ -62,6 +62,53 @@ Dashboard pulls data from OpenClaw Gateway:
 GET http://localhost:18789/api/status
 ```
 
+## 🗄️ Supabase Analytics Logging (every 30s)
+
+Mission Control can persist each polling snapshot to Supabase.
+
+### 1) Run SQL schema in Supabase
+
+1. Open Supabase project: `https://fywmglfnjkoopcvnzvoy.supabase.co`
+2. Go to **SQL Editor** → **New query**
+3. Paste and run: `supabase/analytics_schema.sql`
+
+This creates:
+- `system_health`
+- `agent_status`
+- `cron_jobs`
+- `model_usage`
+- `tasks`
+- `session_logs`
+
+### 2) Configure environment variables
+
+Copy `.env.example` to `.env.local` and fill values:
+
+```bash
+cp .env.example .env.local
+```
+
+Required for logging:
+
+- `VITE_SUPABASE_URL` (already set to the project URL)
+- `VITE_SUPABASE_ANON_KEY` (from Supabase → Settings → API)
+
+If these are missing, the dashboard still runs normally and logs this warning once:
+`[analytics] Supabase logging disabled: missing VITE_SUPABASE_URL and/or VITE_SUPABASE_ANON_KEY.`
+
+### 3) Verify logging
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:5173`, wait ~30 seconds, then run in Supabase SQL editor:
+
+```sql
+select * from system_health order by created_at desc limit 20;
+select * from agent_status order by created_at desc limit 20;
+```
+
 Returns:
 ```json
 {
@@ -157,6 +204,22 @@ npm run build
 - Check OpenClaw is running: `openclaw status`
 - Verify Gateway port 18789 is accessible
 - Check browser console for CORS errors
+
+### Test from a remote machine via SSH tunnel
+
+If OpenClaw runs on a remote host, forward the API and Vite ports:
+
+```bash
+ssh -L 18789:localhost:18789 -L 5173:localhost:5173 <user>@<server>
+```
+
+Then on the remote host start Mission Control:
+
+```bash
+npm run dev -- --host 0.0.0.0 --port 5173
+```
+
+On your local browser open `http://localhost:5173`.
 
 ### Components not rendering
 - Check browser DevTools → Console tab
