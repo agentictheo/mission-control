@@ -37,7 +37,9 @@ function StatusBadge({ status }) {
 }
 
 export default function SystemHealth({ data, loading }) {
-  if (loading) {
+  const isOffline = !data;
+  
+  if (loading && !isOffline) {
     return <div className="text-center py-8 text-gray-400">Loading system health...</div>;
   }
 
@@ -45,7 +47,7 @@ export default function SystemHealth({ data, loading }) {
     <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
       {healthCards.map((card) => {
         const value = data?.[card.key] || {};
-        const status = value.status || 'unknown';
+        const status = isOffline ? 'unknown' : (value.status || 'unknown');
 
         return (
           <div key={card.key} className="bg-slate-700/50 border border-slate-600 rounded-lg p-4 hover:border-blue-500/50 transition">

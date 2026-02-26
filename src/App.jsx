@@ -22,8 +22,15 @@ function App() {
 
         {/* Offline banner */}
         {error && (
-          <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-sm text-red-300 flex items-center gap-2">
-            ⚠️ Gateway unreachable — showing cached/mock data. <span className="text-red-400/70 text-xs">{error}</span>
+          <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-sm text-red-300 flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <span>⚠️ OpenClaw Gateway not available</span>
+            </div>
+            <div className="text-red-400/70 text-xs space-y-1">
+              <p>Checking: http://localhost:18789/api/status</p>
+              <p>Error: {error}</p>
+              <p>Dashboard will auto-retry every 30 seconds. Make sure OpenClaw Gateway is running.</p>
+            </div>
           </div>
         )}
 
